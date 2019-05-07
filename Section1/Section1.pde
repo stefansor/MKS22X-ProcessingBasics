@@ -10,12 +10,9 @@ class Visualizer {
   float x, y;
   float [] values;
   float [] speeds;
-  float wid, len;
-  Visualizer(float x, float y, int datas, float widt, float hi) {
+  Visualizer(float x, float y, int datas) {
     this.x = x;
     this.y = y;
-    wid = widt;
-    len = hi;
     values = new float[datas];
     speeds = new float[datas];
     for (int i = 0; i < values.length; i++) {
@@ -29,26 +26,32 @@ class Visualizer {
     //You can assume 10, but it would be even better 
     //if you could modify it to be larger increments.
     fill(255);
-    rect(x, y, wid, len);
+    rect(x, y, 400, 200);
     //This is a 200x400 box.
     //The width of the visualizer is 400! This rect is the border
 
     //the line is the 0 y-value, the top is 100, the bottom is -100
-    line(x, y+(len/2), x+wid, y+(len/2));
+    line(x, y+100, x+400, y+100);
 
     //You need to use a loop. You need to make the HEIGHT of the bars 
     //the values in the array.
     //Negative values are red, and go below the line.
     //Positive values are green and go above the line.
     for(int i = 0; i < values.length; i++){
-      if (values[i] <= len/2 && values[i] > 0){
+      if (values[i] <= 100 && values[i] > 50){
         fill(255, 0, 0);
       }
-      else if (values[i] <= 0 && values[i] > (len/2) * -1) {
-        fill(0, 255, 0); 
+      else if (values[i] <= 50 && values[i] > 0) {
+        fill(255, 128, 0); 
+      }
+      else if (values[i] <= 0 && values[i] > -50) {
+        fill(255, 255, 0); 
+      }
+      else if (values[i] <= -50) {
+        fill(0, 255, 0);
       }
 
-      rect(x + (wid/values.length)*i, y+(len/2), wid/values.length, values[i]);
+      rect(x + (400/values.length)*i, y+100, 400/values.length, values[i]);
     }
     //???WRITE THIS METHOD FIRST!!!
     //THESE ARE WRONG: They just illustrate how they could look
@@ -65,10 +68,10 @@ class Visualizer {
   void update() {
     //???WRITE THIS METHOD SECOND!!!
     for (int i = 0; i < values.length; i++) {
-      if(values[i] + speeds[i] < len/2 && values[i] + speeds[i] > (len/2) * -1){
+      if(values[i] + speeds[i] < 100 && values[i] + speeds[i] > -100){
         values[i] += speeds[i]; //the speed updates the values. Do not touch this.
       }
-      else if(values[i] + speeds[i] >= len/2 || values[i] + speeds[i] <= (len/2) * -1){
+      else if(values[i] + speeds[i] >= 100 || values[i] + speeds[i] <= -100){
         speeds[i] = speeds[i] * -1;
         values[i] += speeds[i];
       }
@@ -83,7 +86,7 @@ class Visualizer {
 
 void setup() {
   size(600, 500);
-  v = new Visualizer(20, 20, 100, 400, 400);
+  v = new Visualizer(20, 20, 100);
 }
 void draw() {
   background(255);
